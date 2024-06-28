@@ -7,6 +7,7 @@ import "animate.css";
 import { Button } from "@nextui-org/react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   AOS.init();
@@ -75,12 +76,14 @@ export default function Hero() {
                 {exercise.name}
               </h2>
               <p className="text-xl">{exercise.info}</p>
-              <Button className="bg-white mt-6 outline-none border-none rounded-lg py-2 px-4 group-hover:scale-105 group-hover:text-xl font-semibold text-yellow-600 group-hover:text-yellow-700 cursor-pointer transition-all">
-                See More{" "}
-                <span className="group-hover:block hidden font-extrabold text-red-700 transition-all">
-                  &nbsp;&gt;
-                </span>
-              </Button>
+              <Link to="/workout">
+                <Button className="bg-white mt-6 outline-none border-none rounded-lg py-2 px-4 group-hover:scale-105 group-hover:text-xl font-semibold text-yellow-600 group-hover:text-yellow-700 cursor-pointer transition-all">
+                  See More{" "}
+                  <span className="group-hover:block hidden font-extrabold text-red-700 transition-all">
+                    &nbsp;&gt;
+                  </span>
+                </Button>
+              </Link>
             </div>
           </div>
         ))}

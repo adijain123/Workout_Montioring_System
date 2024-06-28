@@ -1,19 +1,19 @@
 import React from 'react'
+import adi from "../assets/adi.jpg";
+import aks from "../assets/aks.jpg";
+import avi from "../assets/avi.jpg";
+import amit from "../assets/amit.jpg";
+import ast from "../assets/ast.jpg";
 
 const About = () => {
   return (
-    <div>
-      <section className="text-gray-400 bg-gray-900 body-font">
-  <div className="container px-5 py-24 mx-auto">
+    <div className="">
+      <section className="text-gray-400 pb-10 bg-gray-900 body-font">
+  <div className=" container px-5 py-24 mx-auto">
     <div className="flex flex-col text-center w-full mb-20">
       <h1 className="text-2xl font-medium title-font mb-4 text-white">
         OUR TEAM
       </h1>
-      <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
-        Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
-        gentrify, subway tile poke farm-to-table. Franzen you probably haven't
-        heard of them.
-      </p>
     </div>
     <div className="flex flex-wrap -m-4">
       <div className="p-4 lg:w-1/5 md:w-1/2">
@@ -21,17 +21,14 @@ const About = () => {
           <img
             alt="team"
             className="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4"
-            src="https://dummyimage.com/200x200"
+            src={ast}
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-              Alper Kamu
+              Astitva Jain 
             </h2>
-            <h3 className="text-gray-500 mb-3">UI Developer</h3>
-            <p className="mb-4">
-              DIY tote bag drinking vinegar cronut adaptogen squid fanny pack
-              vaporware.
-            </p>
+            
+            <h3 className="text-gray-500 mb-3">Team Leader <br/>Machine Learning</h3>
           </div>
         </div>
       </div>
@@ -40,17 +37,14 @@ const About = () => {
           <img
             alt="team"
             className="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4"
-            src="https://dummyimage.com/201x201"
+            src={aks}
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-              Holden Caulfield
+              Akshat Sharma
             </h2>
-            <h3 className="text-gray-500 mb-3">UI Developer</h3>
-            <p className="mb-4">
-              DIY tote bag drinking vinegar cronut adaptogen squid fanny pack
-              vaporware.
-            </p>
+            
+            <h3 className="text-gray-500 mb-3">Frontend</h3>
           </div>
         </div>
       </div>
@@ -59,17 +53,14 @@ const About = () => {
           <img
             alt="team"
             className="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4"
-            src="https://dummyimage.com/202x202"
+            src={amit}
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-              Atticus Finch
+              Amit Tiwari
             </h2>
-            <h3 className="text-gray-500 mb-3">UI Developer</h3>
-            <p className="mb-4">
-              DIY tote bag drinking vinegar cronut adaptogen squid fanny pack
-              vaporware.
-            </p>
+            
+            <h3 className="text-gray-500 mb-3">Content</h3>
           </div>
         </div>
       </div>
@@ -78,17 +69,14 @@ const About = () => {
           <img
             alt="team"
             className="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4"
-            src="https://dummyimage.com/203x203"
+            src={avi}
           />
-          <div className="w-full">
+          <div className="w-full ">
             <h2 className="title-font font-medium text-lg text-white">
-              Henry Letham
+              Aviral Sharma
             </h2>
-            <h3 className="text-gray-500 mb-3">UI Developer</h3>
-            <p className="mb-4">
-              DIY tote bag drinking vinegar cronut adaptogen squid fanny pack
-              vaporware.
-            </p>
+            <h3 className="text-gray-500 mb-3">Overall Support and Research</h3>
+            
           </div>
         </div>
       </div>
@@ -97,17 +85,14 @@ const About = () => {
           <img
             alt="team"
             className="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4"
-            src="https://dummyimage.com/203x203"
+            src={adi}
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-              Henry Letham
+              Adi Jain
             </h2>
-            <h3 className="text-gray-500 mb-3">UI Developer</h3>
-            <p className="mb-4">
-              DIY tote bag drinking vinegar cronut adaptogen squid fanny pack
-              vaporware.
-            </p>
+            
+            <h3 className="text-gray-500 mb-3">Frontend and Backend</h3>
           </div>
         </div>
       </div>
