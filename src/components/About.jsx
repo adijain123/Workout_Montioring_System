@@ -41,11 +41,7 @@ const About = () => {
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-<<<<<<< HEAD
-              Adi Jain
-=======
               Akshat Sharma
->>>>>>> 6155ae4655ebf39c6a87e96cd1ec2daaae8c0e4f
             </h2>
             
             <h3 className="text-gray-500 mb-3">Frontend</h3>
@@ -61,11 +57,7 @@ const About = () => {
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-<<<<<<< HEAD
-              Aviral Sharma
-=======
               Amit Tiwari
->>>>>>> 6155ae4655ebf39c6a87e96cd1ec2daaae8c0e4f
             </h2>
             
             <h3 className="text-gray-500 mb-3">Content</h3>
@@ -81,11 +73,7 @@ const About = () => {
           />
           <div className="w-full ">
             <h2 className="title-font font-medium text-lg text-white">
-<<<<<<< HEAD
-              Amit Tiwari
-=======
               Aviral Sharma
->>>>>>> 6155ae4655ebf39c6a87e96cd1ec2daaae8c0e4f
             </h2>
             <h3 className="text-gray-500 mb-3">Overall Support and Research</h3>
             
@@ -101,11 +89,7 @@ const About = () => {
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-<<<<<<< HEAD
-              Akshat Sharma
-=======
               Adi Jain
->>>>>>> 6155ae4655ebf39c6a87e96cd1ec2daaae8c0e4f
             </h2>
             
             <h3 className="text-gray-500 mb-3">Frontend and Backend</h3>
