@@ -1,4 +1,3 @@
-
 const {
   default: flattenColorPalette
 } = require("tailwindcss/lib/util/flattenColorPalette")
@@ -14,6 +13,9 @@ module.exports = {
   theme: {
     extend: {
       // your config here
+      maxWidth: {
+        'break-words': 'break-word',
+      },
     }
   },
   plugins: [
