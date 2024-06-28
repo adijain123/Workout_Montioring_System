@@ -44,7 +44,7 @@ const About = () => {
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-              Holden Caulfield
+              Adi Jain
             </h2>
             <h3 className="text-gray-500 mb-3">UI Developer</h3>
             <p className="mb-4">
@@ -63,7 +63,7 @@ const About = () => {
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-              Atticus Finch
+              Aviral Sharma
             </h2>
             <h3 className="text-gray-500 mb-3">UI Developer</h3>
             <p className="mb-4">
@@ -82,7 +82,7 @@ const About = () => {
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-              Henry Letham
+              Amit Tiwari
             </h2>
             <h3 className="text-gray-500 mb-3">UI Developer</h3>
             <p className="mb-4">
@@ -101,7 +101,7 @@ const About = () => {
           />
           <div className="w-full">
             <h2 className="title-font font-medium text-lg text-white">
-              Henry Letham
+              Akshat Sharma
             </h2>
             <h3 className="text-gray-500 mb-3">UI Developer</h3>
             <p className="mb-4">

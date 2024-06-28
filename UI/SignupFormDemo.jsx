@@ -66,7 +66,7 @@ export function SignupFormDemo() {
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black dark:bg-black">
       <h2 className="font-bold text-xl text-sky-200 dark:text-neutral-200">
       <h1 className="text-2xl text-white">Sign Up</h1>
-        Welcome to Algo-Trading
+      Welcome to Workout-Monitoring System
       </h2>
       <p className="text-rose-100 text-sm max-w-sm mt-2 dark:text-neutral-300">
        Left Right doesn't matter when you are with us...
