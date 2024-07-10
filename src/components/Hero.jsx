@@ -35,18 +35,18 @@ export default function Hero() {
   ];
 
   return (
-    <div className="container mx-auto p-4 ">
-      <div className="flex flex-col">
+    <div className="container mx-auto p-4">
+      <div className="flex flex-col space-y-6">
         {exercises.map((exercise, index) => (
           <div
             key={index}
-            className={`
-          h-[25vw]
-          flex ${
-            index % 2 == 0
-              ? "bg-gradient-to-r flex-row-reverse from-[#1dff2560] via-[#00ffee42]"
-              : "bg-gradient-to-l flex-row from-[#fd3ef749] via-[#6600ff47]"
-          } justify-between items-center p-4 bg-transparent text-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 w-[100%]   to-transparent`}
+            className={`flex flex-col md:flex-row ${
+              index % 2 === 0 ? "md:flex-row-reverse" : ""
+            } ${
+              index % 2 === 0
+                ? "bg-gradient-to-r from-[#1dff2560] via-[#00ffee42] to-transparent"
+                : "bg-gradient-to-l from-[#fd3ef749] via-[#6600ff47] to-transparent"
+            } justify-between items-center p-4 text-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300`}
           >
             <div
               data-aos="fade-right"
@@ -55,12 +55,12 @@ export default function Hero() {
               data-aos-easing="ease-in-out"
               data-aos-mirror="true"
               data-aos-once="true"
-              className="w-[35vw] group h-full flex items-center justify-center  m-2"
+              className="flex items-center justify-center w-full md:w-1/3 p-2"
             >
               <img
                 src={exercise.image}
                 alt={exercise.name}
-                className="w-[90%]  rounded-md transform hover:scale-110 transition-transform duration-300"
+                className="w-full rounded-md transform hover:scale-110 transition-transform duration-300"
               />
             </div>
             <div
@@ -70,19 +70,19 @@ export default function Hero() {
               data-aos-easing="ease-in-out"
               data-aos-mirror="true"
               data-aos-once="true"
-              className="w-[50vw] py-6 rounded-xl px-8 bg-black bg-opacity-40 shadow-black border-[#ffffff52] border-2 shadow-sm m-2 "
+              className="flex flex-col justify-center w-full md:w-2/3 p-6 bg-black bg-opacity-40 shadow-black border-2 border-[#ffffff52] shadow-sm rounded-xl m-2"
             >
               <h2 className="text-2xl font-bold pb-4 underline underline-offset-8 decoration-yellow-500">
                 {exercise.name}
               </h2>
-              <p className="text-xl">{exercise.info}</p>
+              <p className="text-lg md:text-xl">{exercise.info}</p>
               <Link to="/workout">
-                <Button className="bg-white mt-6 outline-none border-none rounded-lg py-2 px-4 group-hover:scale-105 group-hover:text-xl font-semibold text-yellow-600 group-hover:text-yellow-700 cursor-pointer transition-all">
+                <button className="bg-white mt-6 outline-none border-none rounded-lg py-2 px-4 hover:scale-105 hover:text-xl font-semibold text-yellow-600 hover:text-yellow-700 cursor-pointer transition-all">
                   See More{" "}
-                  <span className="group-hover:block hidden font-extrabold text-red-700 transition-all">
+                  <span className="hidden group-hover:inline-block font-extrabold text-red-700 transition-all">
                     &nbsp;&gt;
                   </span>
-                </Button>
+                </button>
               </Link>
             </div>
           </div>
