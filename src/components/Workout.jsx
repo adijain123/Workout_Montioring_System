@@ -12,11 +12,11 @@ export default function Workout() {
   const startVideo = async (key) => {
     setLoading(true);
     try {
-      const response = await fetch(`https://backend-workout-monitoring.onrender.com/video_feed?key=${key}`);
+      const response = await fetch(`http://127.0.0.1:5000/video_feed?key=${key}`);
       if (!response.ok) {
         throw new Error('Failed to connect to the backend');
       }
-      setVideoSrc(`https://backend-workout-monitoring.onrender.com/video_feed?key=${key}`);
+      setVideoSrc(`http://127.0.0.1:5000/video_feed?key=${key}`);
       setError('');
       if(key=='lifting'){ setlunges(false); setjacks(false); setleglift(false) }
       if(key=='lunges'){ setlifting(false); setjacks(false); setleglift(false)}
@@ -34,7 +34,7 @@ export default function Workout() {
   const endVideo = async () => {
     setLoading(true); // Show loading indicator while stopping video
     try {
-      const response = await fetch('https://backend-workout-monitoring.onrender.com/stop_video_feed', {
+      const response = await fetch('http://127.0.0.1:5000/stop_video_feed', {
         method: 'POST'
       });
       if (!response.ok) {

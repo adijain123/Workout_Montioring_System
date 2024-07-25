@@ -31,7 +31,7 @@ export function Loginpage() {
       alert("Password has left Blank!");
     }
     else{
-        axios.post('https://backend-workout-monitoring.onrender.com/login', {
+        axios.post('http://127.0.0.1:5000/login', {
             email: email,
             password: password
         })
