@@ -2,6 +2,7 @@ import Navbar from './components/Navbar'
 import Home from './components/Home';
 import Workout from './components/Workout';
 import About from './components/About';
+import ProfileDashboard from './components/progressProfile'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { SignupFormDemo } from '../UI/SignupFormDemo';
 import { Loginpage } from '../UI/Loginpage';
@@ -18,6 +19,11 @@ function App() {
       path: "/workout", 
       element: <><Navbar/>< Workout/></>,
      },
+     {
+      path: "/progressprofile", 
+      element: <> <Navbar /><ProfileDashboard/> </>,
+     },
+
 
     {
      path: "/about", 
@@ -32,7 +38,7 @@ function App() {
       path: "/login", 
       element: <> <Loginpage /></>,
      },
-
+     
   ]);
   return (
     <>
