@@ -12,7 +12,7 @@ export default function Workout() {
   const startVideo = async (key) => {
     setLoading(true);
     try {
-      const response = await fetch(`https://backend-workout-monitoring.onrender.com/video_feed?key=${key}`);
+      const response = await fetch(`http://127.0.0.1:5000/video_feed?key=${key}`);
       if (!response.ok) {
         throw new Error('Failed to connect to the backend');
       }
