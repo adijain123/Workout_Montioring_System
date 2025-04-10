@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const checkAuth = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/check-auth", {
+      const response = await axios.get("https://backend-workout-monitoring.onrender.com/check-auth", {
         withCredentials: true,
       });
       if (response.data.authenticated) {
