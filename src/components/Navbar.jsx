@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://127.0.0.1:5000/logout", {}, { withCredentials: true });
+      await axios.post("https://backend-workout-monitoring.onrender.com/logout", {}, { withCredentials: true });
       setUser(null);
       navigate("/");
     } catch (err) {
