@@ -21,7 +21,7 @@ export function SignupFormDemo() {
     if (!password) return alert("Password is blank!");
 
     axios.post(
-      'http://127.0.0.1:5000/signup',
+      'https://backend-workout-monitoring.onrender.com/signup',
       {
         firstname,
         lastname,

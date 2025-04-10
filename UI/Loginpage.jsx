@@ -22,7 +22,7 @@ export function Loginpage() {
     if (!password) return alert("Password has left Blank!");
 
     axios.post(
-      'http://127.0.0.1:5000/login',
+      'https://backend-workout-monitoring.onrender.com/login',
       { email, password },
       { withCredentials: true } // Ensures cookie is sent and stored
     )
