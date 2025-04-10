@@ -49,6 +49,7 @@ export default function Workout() {
   const [exerciseType, setExerciseType] = useState('lifting'); // Default to lifting, can be 'lifting', 'lunges', 'jumping-jacks', or 'leg-lifts'
   const [stopExerciseFunc, setStopExerciseFunc] = useState(() => () => ({}));
 
+<<<<<<< HEAD
   // Check authentication on component mount
   useEffect(() => {
     const checkAuth = async () => {
@@ -64,6 +65,14 @@ export default function Workout() {
         }
       } catch (err) {
         console.error("Authentication error:", err.response?.data || err.message);
+=======
+  const startVideo = async (key) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/video_feed?key=${key}`);
+      if (!response.ok) {
+        throw new Error('Failed to connect to the backend');
+>>>>>>> 7cb9c54ad96c6335d641085757d225427013141d
       }
     };
     
