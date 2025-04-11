@@ -1,7 +1,3 @@
-import { Pose, POSE_CONNECTIONS, POSE_LANDMARKS } from '@mediapipe/pose';
-import * as cam from '@mediapipe/camera_utils';
-import * as drawingUtils from '@mediapipe/drawing_utils';
-
 let counter = 0;
 let stageLeft = null;
 let stageRight = null;
@@ -21,6 +17,12 @@ function calculateAngle(a, b, c) {
 
 export function initLifting(videoElement, canvasElement, updateRepsStage, updateTime) {
   startTime = new Date();
+
+  const Pose = window.Pose;
+  const POSE_CONNECTIONS = window.POSE_CONNECTIONS;
+  const POSE_LANDMARKS = window.POSE_LANDMARKS;
+  const drawingUtils = window;
+  const cam = window;
 
   const pose = new Pose({
     locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
