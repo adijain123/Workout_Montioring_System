@@ -1,6 +1,7 @@
-import { Pose, POSE_CONNECTIONS, POSE_LANDMARKS } from '@mediapipe/pose';
-import { Camera } from '@mediapipe/camera_utils';
-import * as drawingUtils from '@mediapipe/drawing_utils';
+// Use these imports - they should work in both localhost and Vercel
+import { Pose as MediaPipePose, POSE_CONNECTIONS } from '@mediapipe/pose';
+import { Camera as MediaPipeCamera } from '@mediapipe/camera_utils';
+import { drawConnectors, drawLandmarks } from '@mediapipe/drawing_utils';
 
 let counter = 0;
 let stageLeft = null;
@@ -12,18 +13,21 @@ let startTime = null;
 let elapsedTime = 0;
 
 function calculateAngle(a, b, c) {
-  const radians = Math.atan2(c[1] - b[1], c[0] - b[0]) -
+  const radians = Math.atan2(c[1] - b[1], c[0] - b[0]) - 
                   Math.atan2(a[1] - b[1], a[0] - b[0]);
   let angle = Math.abs(radians * (180.0 / Math.PI));
-  if (angle > 180) angle = 360 - angle;
-  return angle;
+  return angle > 180 ? 360 - angle : angle;
 }
 
 export function initLifting(videoElement, canvasElement, updateRepsStage, updateTime) {
-  startTime = new Date();
+  console.log('Initializing pose detection...'); // Debug log
   
-  const pose = new Pose({
-    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
+  // Initialize pose detection
+  const pose = new MediaPipePose({
+    locateFile: (file) => {
+      console.log('Loading MediaPipe file:', file); // Debug log
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+    }
   });
 
   pose.setOptions({
@@ -31,158 +35,114 @@ export function initLifting(videoElement, canvasElement, updateRepsStage, update
     smoothLandmarks: true,
     enableSegmentation: false,
     minDetectionConfidence: 0.6,
-    minTrackingConfidence: 0.6,
+    minTrackingConfidence: 0.6
   });
 
-  const updateTimer = () => {
-    if (startTime) {
-      const now = new Date();
-      elapsedTime = Math.floor((now - startTime) / 1000);
-      updateTime(elapsedTime);
-    }
-  };
-
-  const timerInterval = setInterval(updateTimer, 1000);
+  // Timer setup
+  startTime = new Date();
+  const timerInterval = setInterval(() => {
+    elapsedTime = Math.floor((new Date() - startTime) / 1000);
+    updateTime(elapsedTime);
+  }, 1000);
 
   pose.onResults((results) => {
     const ctx = canvasElement.getContext('2d');
     ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
+    // Mirror the video and drawings
     ctx.save();
     ctx.translate(canvasElement.width, 0);
     ctx.scale(-1, 1);
 
+    // Draw video frame
     ctx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
     if (results.poseLandmarks) {
-      drawingUtils.drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, {
-        color: '#00FF00', lineWidth: 3
-      });
-      drawingUtils.drawLandmarks(ctx, results.poseLandmarks, {
-        color: '#FF0000', lineWidth: 2
-      });
+      // Draw pose landmarks and connections
+      drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, 
+        { color: '#00FF00', lineWidth: 3 });
+      drawLandmarks(ctx, results.poseLandmarks, 
+        { color: '#FF0000', lineWidth: 2 });
 
-      const lm = results.poseLandmarks;
-
+      // Get landmark coordinates
       const getCoord = (landmark) => [
         landmark.x * canvasElement.width,
-        landmark.y * canvasElement.height,
+        landmark.y * canvasElement.height
       ];
 
-      const lShoulderVis = lm[POSE_LANDMARKS.LEFT_SHOULDER].visibility;
-      const lElbowVis = lm[POSE_LANDMARKS.LEFT_ELBOW].visibility;
-      const lWristVis = lm[POSE_LANDMARKS.LEFT_WRIST].visibility;
-
-      const rShoulderVis = lm[POSE_LANDMARKS.RIGHT_SHOULDER].visibility;
-      const rElbowVis = lm[POSE_LANDMARKS.RIGHT_ELBOW].visibility;
-      const rWristVis = lm[POSE_LANDMARKS.RIGHT_WRIST].visibility;
-
-      if (lShoulderVis > VISIBILITY_THRESHOLD && lElbowVis > VISIBILITY_THRESHOLD && lWristVis > VISIBILITY_THRESHOLD) {
-        const lShoulder = getCoord(lm[POSE_LANDMARKS.LEFT_SHOULDER]);
-        const lElbow = getCoord(lm[POSE_LANDMARKS.LEFT_ELBOW]);
-        const lWrist = getCoord(lm[POSE_LANDMARKS.LEFT_WRIST]);
+      // Process left arm
+      if (results.poseLandmarks[11] && results.poseLandmarks[13] && results.poseLandmarks[15]) {
+        const lShoulder = getCoord(results.poseLandmarks[11]);
+        const lElbow = getCoord(results.poseLandmarks[13]);
+        const lWrist = getCoord(results.poseLandmarks[15]);
         const lAngle = calculateAngle(lShoulder, lElbow, lWrist);
 
         if (lAngle > 150) {
-          if (stageLeft !== 'down') {
-            stageLeft = 'down';
-            leftArmCooldown = false;
-          }
+          stageLeft = 'down';
+          leftArmCooldown = false;
         } else if (lAngle < 40 && stageLeft === 'down' && !leftArmCooldown) {
           stageLeft = 'up';
-          counter += 1;
+          counter++;
           leftArmCooldown = true;
-          setTimeout(() => {
-            leftArmCooldown = false;
-          }, 1500);
+          setTimeout(() => leftArmCooldown = false, 1500);
         }
       }
 
-      if (rShoulderVis > VISIBILITY_THRESHOLD && rElbowVis > VISIBILITY_THRESHOLD && rWristVis > VISIBILITY_THRESHOLD) {
-        const rShoulder = getCoord(lm[POSE_LANDMARKS.RIGHT_SHOULDER]);
-        const rElbow = getCoord(lm[POSE_LANDMARKS.RIGHT_ELBOW]);
-        const rWrist = getCoord(lm[POSE_LANDMARKS.RIGHT_WRIST]);
+      // Process right arm
+      if (results.poseLandmarks[12] && results.poseLandmarks[14] && results.poseLandmarks[16]) {
+        const rShoulder = getCoord(results.poseLandmarks[12]);
+        const rElbow = getCoord(results.poseLandmarks[14]);
+        const rWrist = getCoord(results.poseLandmarks[16]);
         const rAngle = calculateAngle(rShoulder, rElbow, rWrist);
 
         if (rAngle > 150) {
-          if (stageRight !== 'down') {
-            stageRight = 'down';
-            rightArmCooldown = false;
-          }
+          stageRight = 'down';
+          rightArmCooldown = false;
         } else if (rAngle < 40 && stageRight === 'down' && !rightArmCooldown) {
           stageRight = 'up';
-          counter += 1;
+          counter++;
           rightArmCooldown = true;
-          setTimeout(() => {
-            rightArmCooldown = false;
-          }, 1500);
+          setTimeout(() => rightArmCooldown = false, 1500);
         }
       }
 
-      const stageInfo = `Left: ${stageLeft || '---'} | Right: ${stageRight || '---'}`;
-      updateRepsStage(counter, stageInfo);
+      updateRepsStage(counter, `Left: ${stageLeft || '---'} | Right: ${stageRight || '---'}`);
     }
 
-    ctx.restore();
+    ctx.restore(); // Restore canvas state
 
-    const drawText = (text, x, y, color) => {
-      ctx.shadowColor = 'black';
-      ctx.shadowBlur = 4;
-      ctx.shadowOffsetX = 2;
-      ctx.shadowOffsetY = 2;
-
-      ctx.font = 'bold 24px Arial';
-      ctx.fillStyle = color;
-      ctx.fillText(text, x, y);
-
-      ctx.shadowColor = 'transparent';
-      ctx.shadowBlur = 0;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-    };
-
-    const addTextBackground = (x, y, width, height) => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-      ctx.fillRect(x - 5, y - 25, width, height);
-    };
-
-    addTextBackground(5, 30, 200, 150);
-    drawText(`REPS: ${counter}`, 10, 30, '#FFFF00');
-    drawText(`LEFT ARM: ${stageLeft || '---'}`, 10, 60, '#00CCFF');
-    drawText(`RIGHT ARM: ${stageRight || '---'}`, 10, 90, '#FF66CC');
-    drawText(`L READY: ${!leftArmCooldown ? 'YES' : 'NO'}`, 10, 120, 
-             !leftArmCooldown ? '#00FFCC' : '#FF3333');
-    drawText(`R READY: ${!rightArmCooldown ? 'YES' : 'NO'}`, 10, 150, 
-             !rightArmCooldown ? '#00FFCC' : '#FF3333');
+    // Draw UI elements
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect(5, 5, 200, 150);
+    ctx.font = '16px Arial';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(`REPS: ${counter}`, 10, 30);
+    ctx.fillText(`LEFT: ${stageLeft || '---'}`, 10, 60);
+    ctx.fillText(`RIGHT: ${stageRight || '---'}`, 10, 90);
   });
 
-  const camera = new Camera(videoElement, {
+  // Initialize camera
+  const camera = new MediaPipeCamera(videoElement, {
     onFrame: async () => {
-      await pose.send({ image: videoElement });
+      try {
+        await pose.send({ image: videoElement });
+      } catch (error) {
+        console.error('Error processing frame:', error);
+      }
     },
     width: 640,
-    height: 480,
+    height: 480
   });
 
   camera.start();
 
+  // Cleanup function
   return () => {
     camera.stop();
     clearInterval(timerInterval);
-
-    const workoutData = {
+    return {
       reps: counter,
-      duration: elapsedTime,
+      duration: elapsedTime
     };
-
-    counter = 0;
-    stageLeft = null;
-    stageRight = null;
-    leftArmCooldown = false;
-    rightArmCooldown = false;
-    startTime = null;
-    elapsedTime = 0;
-
-    return workoutData;
   };
 }
