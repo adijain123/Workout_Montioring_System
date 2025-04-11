@@ -14,7 +14,7 @@ export default function Hero() {
   const exercises = [
     {
       name: "Lifting",
-      image: lift,
+      image: 'https://images.theconversation.com/files/460514/original/file-20220429-20-h0umhf.jpg?ixlib=rb-4.1.0&rect=0%2C10%2C3500%2C2226&q=45&auto=format&w=926&fit=clip',
       info: "Lifting is a great way to build muscle and strength.Weightlifting or weight lifting generally refers to physical exercises and sports in which people lift weights, often in the form of dumbbells or barbells. People engage in weightlifting for a variety of different reasons. These can include: developing physical strength; promoting health and fitness; competing in weightlifting sports; and developing a muscular and aesthetic physique.",
     },
     {
@@ -24,12 +24,12 @@ export default function Hero() {
     },
     {
       name: "Jumping Jacks",
-      image: third,
+      image: double,
       info: "A jumping jack, also known as a star jump and called a side-straddle hop in the US military, is a physical jumping exercise performed by jumping to a position with the legs spread wide and the hands going overhead, sometimes in a clap, and then returning to a position with the feet together and the arms at the sides.",
     },
     {
       name: "Double Leg Lift",
-      image: double,
+      image: 'https://www.shutterstock.com/shutterstock/photos/1338723998/display_1500/stock-vector-woman-doing-double-leg-raise-exercise-in-step-illustration-about-introduction-workout-1338723998.jpg',
       info: "The lying leg raise is done by lying on the floor on the back. It is done without apparatus except possibly cushions, or weights for added resistance.Practitioners generally caution to keep the lower back in contact with the floor and place hands to sides or under lower back for support.Due to leverage, the hardest portion of a supine (lying) leg raise is generally the first part when the legs are on the floor, as this is when the femur is parallel with the earth and perpendicular to the pull of gravity.",
     },
   ];

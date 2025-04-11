@@ -298,7 +298,7 @@ export default function Workout() {
 
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center w-full px-6 py-16 bg-gradient-to-b from-gray-950 to-blue-950 text-gray-100 min-h-screen">
+      <div className="flex flex-col items-center justify-center w-full px-6 py-16 bg-gradient-to-b from-gray-900 to-blue-950 text-gray-100 min-h-screen">
         <div className="w-full max-w-2xl bg-gradient-to-b from-gray-800 to-blue-900 p-10 rounded-xl shadow-2xl border border-blue-800">
           <h2 className="text-3xl font-bold text-blue-300 mb-6 text-center">Authentication Required</h2>
           <div className="bg-blue-900/30 p-6 rounded-lg border border-blue-800/50 mb-6">
@@ -330,7 +330,7 @@ export default function Workout() {
   }
 
   return (
-    <div className="flex flex-col items-center w-full p-6 bg-gradient-to-b from-gray-950 to-blue-950 text-gray-100 min-h-screen">
+    <div className="flex flex-col items-center w-full p-6 bg-gradient-to-b from-gray-900 to-blue-950 text-gray-100 min-h-screen">
       <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-300 mb-8">Workout Progress Tracker</h1>
       
       {error && (
@@ -401,7 +401,7 @@ export default function Workout() {
       )}
       
       {show && (
-        <div className="w-full max-w-5xl bg-gradient-to-b from-gray-950 to-gray-900 rounded-xl shadow-xl p-6 border border-blue-800/30">
+        <div className="w-full max-w-5xl bg-gradient-to-b from-gray-800 to-blue-900 rounded-xl shadow-xl p-6 border border-blue-800/30">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6 bg-blue-900/30 p-4 rounded-lg border border-blue-800/50">
             <div className="flex flex-wrap justify-center sm:justify-start gap-4 mb-4 sm:mb-0">
               <div className="flex items-center px-4 py-2 bg-blue-800/50 rounded-lg">
@@ -552,7 +552,7 @@ export default function Workout() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
               </svg>
-              Back to Exercise
+              Back to Dashboard
             </button>
           </div>
         </div>
@@ -561,7 +561,7 @@ export default function Workout() {
       {!show && (
         <div className="w-full max-w-5xl mt-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-b from-gray-900 to-gray-950 p-6 rounded-xl shadow-xl border border-blue-800/30">
+            <div className="bg-gradient-to-b from-gray-800 to-blue-900 p-6 rounded-xl shadow-xl border border-blue-800/30">
               <h2 className="text-2xl font-bold text-blue-300 mb-6 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -589,7 +589,7 @@ export default function Workout() {
               )}
             </div>
             
-            <div className="bg-gradient-to-b from-gray-900 to-gray-950 p-6 rounded-xl shadow-xl border border-blue-800/30">
+            <div className="bg-gradient-to-b from-gray-800 to-blue-900 p-6 rounded-xl shadow-xl border border-blue-800/30">
               <h2 className="text-2xl font-bold text-blue-300 mb-6 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -626,7 +626,7 @@ export default function Workout() {
           </div>
           
           <div className="mt-8">
-            <div className="bg-gradient-to-b from-gray-900 to-gray-950 p-6 rounded-xl shadow-xl border border-blue-800/30">
+            <div className="bg-gradient-to-b from-gray-800 to-blue-900 p-6 rounded-xl shadow-xl border border-blue-800/30">
               <h2 className="text-2xl font-bold text-blue-300 mb-6 flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
