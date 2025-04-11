@@ -1,12 +1,9 @@
-import * as poseDetection from '@mediapipe/pose';
-import * as cam from '@mediapipe/camera_utils';
-import * as drawingUtils from '@mediapipe/drawing_utils';
-
 let counter = 0;
-let stage = null;
-// Add visibility threshold
+let stageLeft = null;
+let stageRight = null;
+let leftLegCooldown = false;
+let rightLegCooldown = false;
 const VISIBILITY_THRESHOLD = 0.6;
-// Track workout duration
 let startTime = null;
 let elapsedTime = 0;
 
@@ -19,10 +16,15 @@ function calculateAngle(a, b, c) {
 }
 
 export function initLunges(videoElement, canvasElement, updateRepsStage, updateTime) {
-  // Initialize start time
   startTime = new Date();
-  
-  const pose = new poseDetection.Pose({
+
+  const Pose = window.Pose;
+  const POSE_CONNECTIONS = window.POSE_CONNECTIONS;
+  const POSE_LANDMARKS = window.POSE_LANDMARKS;
+  const drawingUtils = window;
+  const cam = window;
+
+  const pose = new Pose({
     locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`,
   });
 
@@ -34,7 +36,6 @@ export function initLunges(videoElement, canvasElement, updateRepsStage, updateT
     minTrackingConfidence: 0.6,
   });
 
-  // Timer function to update elapsed time
   const updateTimer = () => {
     if (startTime) {
       const now = new Date();
@@ -42,25 +43,19 @@ export function initLunges(videoElement, canvasElement, updateRepsStage, updateT
       updateTime(elapsedTime);
     }
   };
-  
-  // Start timer interval
+
   const timerInterval = setInterval(updateTimer, 1000);
 
   pose.onResults((results) => {
     const ctx = canvasElement.getContext('2d');
     ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-
-    // Mirror canvas
     ctx.save();
     ctx.translate(canvasElement.width, 0);
     ctx.scale(-1, 1);
-
-    // Draw mirrored video
     ctx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
-    // Draw mirrored landmarks
     if (results.poseLandmarks) {
-      drawingUtils.drawConnectors(ctx, results.poseLandmarks, poseDetection.POSE_CONNECTIONS, {
+      drawingUtils.drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, {
         color: '#00FF00', lineWidth: 3
       });
       drawingUtils.drawLandmarks(ctx, results.poseLandmarks, {
@@ -73,88 +68,103 @@ export function initLunges(videoElement, canvasElement, updateRepsStage, updateT
         landmark.x * canvasElement.width,
         landmark.y * canvasElement.height,
       ];
-      
-      // Check if key landmarks are visible
-      const lHipVis = lm[poseDetection.POSE_LANDMARKS.LEFT_HIP].visibility;
-      const lKneeVis = lm[poseDetection.POSE_LANDMARKS.LEFT_KNEE].visibility;
-      const lAnkleVis = lm[poseDetection.POSE_LANDMARKS.LEFT_ANKLE].visibility;
-      
-      const rHipVis = lm[poseDetection.POSE_LANDMARKS.RIGHT_HIP].visibility;
-      const rKneeVis = lm[poseDetection.POSE_LANDMARKS.RIGHT_KNEE].visibility;
-      const rAnkleVis = lm[poseDetection.POSE_LANDMARKS.RIGHT_ANKLE].visibility;
 
-      // Only process if landmarks are visible enough
-      if (lHipVis > VISIBILITY_THRESHOLD && lKneeVis > VISIBILITY_THRESHOLD && lAnkleVis > VISIBILITY_THRESHOLD &&
-          rHipVis > VISIBILITY_THRESHOLD && rKneeVis > VISIBILITY_THRESHOLD && rAnkleVis > VISIBILITY_THRESHOLD) {
-        
-        // Get coordinates for left leg
-        const leftHip = getCoord(lm[poseDetection.POSE_LANDMARKS.LEFT_HIP]);
-        const leftKnee = getCoord(lm[poseDetection.POSE_LANDMARKS.LEFT_KNEE]);
-        const leftAnkle = getCoord(lm[poseDetection.POSE_LANDMARKS.LEFT_ANKLE]);
-        
-        // Get coordinates for right leg
-        const rightHip = getCoord(lm[poseDetection.POSE_LANDMARKS.RIGHT_HIP]);
-        const rightKnee = getCoord(lm[poseDetection.POSE_LANDMARKS.RIGHT_KNEE]);
-        const rightAnkle = getCoord(lm[poseDetection.POSE_LANDMARKS.RIGHT_ANKLE]);
-        
-        // Calculate angles
+      const leftHipVis = lm[POSE_LANDMARKS.LEFT_HIP].visibility;
+      const leftKneeVis = lm[POSE_LANDMARKS.LEFT_KNEE].visibility;
+      const leftAnkleVis = lm[POSE_LANDMARKS.LEFT_ANKLE].visibility;
+
+      const rightHipVis = lm[POSE_LANDMARKS.RIGHT_HIP].visibility;
+      const rightKneeVis = lm[POSE_LANDMARKS.RIGHT_KNEE].visibility;
+      const rightAnkleVis = lm[POSE_LANDMARKS.RIGHT_ANKLE].visibility;
+
+      // Check left leg
+      if (leftHipVis > VISIBILITY_THRESHOLD && leftKneeVis > VISIBILITY_THRESHOLD && leftAnkleVis > VISIBILITY_THRESHOLD) {
+        const leftHip = getCoord(lm[POSE_LANDMARKS.LEFT_HIP]);
+        const leftKnee = getCoord(lm[POSE_LANDMARKS.LEFT_KNEE]);
+        const leftAnkle = getCoord(lm[POSE_LANDMARKS.LEFT_ANKLE]);
         const leftAngle = calculateAngle(leftHip, leftKnee, leftAnkle);
-        const rightAngle = calculateAngle(rightHip, rightKnee, rightAnkle);
-        
-        // Display angles on knees (mirrored)
+
+        // Draw angle
+        ctx.save();
+        ctx.scale(-1, 1);
         ctx.font = '16px Arial';
         ctx.fillStyle = 'white';
-        ctx.fillText(Math.round(leftAngle), leftKnee[0], leftKnee[1]);
-        ctx.fillText(Math.round(rightAngle), rightKnee[0], rightKnee[1]);
-        
-        // Lunge counter logic
-        if (leftAngle > 170 && rightAngle > 170) {
-          if (stage !== 'down') {
-            stage = 'down';
+        ctx.fillText(Math.round(leftAngle), -leftKnee[0], leftKnee[1]);
+        ctx.restore();
+
+        if (leftAngle > 170) {
+          if (stageLeft !== 'down') {
+            stageLeft = 'down';
+            leftLegCooldown = false;
           }
-        } else if (leftAngle < 110 && rightAngle < 110 && stage === 'down') {
-          stage = 'up';
+        } else if (leftAngle < 110 && stageLeft === 'down' && !leftLegCooldown) {
+          stageLeft = 'up';
           counter += 1;
+          leftLegCooldown = true;
+          setTimeout(() => { leftLegCooldown = false; }, 1500);
         }
       }
 
-      // Update the counter and stage
-      updateRepsStage(counter, stage || '---');
+      // Check right leg
+      if (rightHipVis > VISIBILITY_THRESHOLD && rightKneeVis > VISIBILITY_THRESHOLD && rightAnkleVis > VISIBILITY_THRESHOLD) {
+        const rightHip = getCoord(lm[POSE_LANDMARKS.RIGHT_HIP]);
+        const rightKnee = getCoord(lm[POSE_LANDMARKS.RIGHT_KNEE]);
+        const rightAnkle = getCoord(lm[POSE_LANDMARKS.RIGHT_ANKLE]);
+        const rightAngle = calculateAngle(rightHip, rightKnee, rightAnkle);
+
+        // Draw angle
+        ctx.save();
+        ctx.scale(-1, 1);
+        ctx.font = '16px Arial';
+        ctx.fillStyle = 'white';
+        ctx.fillText(Math.round(rightAngle), -rightKnee[0], rightKnee[1]);
+        ctx.restore();
+
+        if (rightAngle > 170) {
+          if (stageRight !== 'down') {
+            stageRight = 'down';
+            rightLegCooldown = false;
+          }
+        } else if (rightAngle < 110 && stageRight === 'down' && !rightLegCooldown) {
+          stageRight = 'up';
+          counter += 1;
+          rightLegCooldown = true;
+          setTimeout(() => { rightLegCooldown = false; }, 1500);
+        }
+      }
+
+      const stageInfo = `Left: ${stageLeft || '---'} | Right: ${stageRight || '---'}`;
+      updateRepsStage(counter, stageInfo);
     }
 
-    ctx.restore(); // Stop mirroring
+    ctx.restore();
 
-    // Draw readable text with improved visibility (unmirrored)
     const drawText = (text, x, y, color) => {
-      // Add text shadow for better contrast against any background
       ctx.shadowColor = 'black';
       ctx.shadowBlur = 4;
       ctx.shadowOffsetX = 2;
       ctx.shadowOffsetY = 2;
-      
       ctx.font = 'bold 24px Arial';
       ctx.fillStyle = color;
       ctx.fillText(text, x, y);
-      
-      // Reset shadow for next drawings
       ctx.shadowColor = 'transparent';
       ctx.shadowBlur = 0;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 0;
     };
 
-    // Add semi-transparent background behind text for better readability
     const addTextBackground = (x, y, width, height) => {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
       ctx.fillRect(x - 5, y - 25, width, height);
     };
 
-    // Text display area
-    addTextBackground(5, 30, 200, 100);
-    
-    // Display text with better colors
-    drawText(`REPS: ${counter}`, 10, 30, '#FFFF00'); // Yellow for reps
-    drawText(`STAGE: ${stage || '---'}`, 10, 60, '#00CCFF'); // Blue for stage
+    addTextBackground(5, 30, 210, 150);
+
+    drawText(`REPS: ${counter}`, 10, 30, '#FFFF00');
+    drawText(`LEFT LEG: ${stageLeft || '---'}`, 10, 60, '#00CCFF');
+    drawText(`RIGHT LEG: ${stageRight || '---'}`, 10, 90, '#FF66CC');
+    drawText(`L READY: ${!leftLegCooldown ? 'YES' : 'NO'}`, 10, 120, !leftLegCooldown ? '#00FFCC' : '#FF3333');
+    drawText(`R READY: ${!rightLegCooldown ? 'YES' : 'NO'}`, 10, 150, !rightLegCooldown ? '#00FFCC' : '#FF3333');
   });
 
   const camera = new cam.Camera(videoElement, {
@@ -168,22 +178,22 @@ export function initLunges(videoElement, canvasElement, updateRepsStage, updateT
   camera.start();
 
   return () => {
-    // Clean up
     camera.stop();
     clearInterval(timerInterval);
-    
-    // Return workout data
+
     const workoutData = {
       reps: counter,
       duration: elapsedTime,
     };
-    
-    // Reset variables
+
     counter = 0;
-    stage = null;
+    stageLeft = null;
+    stageRight = null;
+    leftLegCooldown = false;
+    rightLegCooldown = false;
     startTime = null;
     elapsedTime = 0;
-    
+
     return workoutData;
   };
 }

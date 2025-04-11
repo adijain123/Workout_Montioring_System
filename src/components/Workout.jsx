@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { initLifting } from './liftingPose';
 import { initLunges } from './lunges';
 import { initJumpingJacks } from './jumpingJacks';
-import { initLegLiftPoseEstimation } from './double_leg_lift'; // Import the new leg lift module
+import { initLegLift } from './double_leg_lift'; // Import the new leg lift module
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
 // Add these imports for Chart.js
@@ -174,7 +174,7 @@ export default function Workout() {
         stopFunc = initJumpingJacks(video, canvas, handleUpdate, handleTimeUpdate);
       } else if (exerciseType === 'leg-lifts') {
         // Initialize leg lift pose estimation
-        stopFunc = initLegLiftPoseEstimation(video, canvas, handleUpdate, handleTimeUpdate);
+        stopFunc = initLegLift(video, canvas, handleUpdate, handleTimeUpdate);
       } else {
         stopFunc = initLifting(video, canvas, handleUpdate, handleTimeUpdate);
       }
