@@ -48,6 +48,9 @@ export default function Workout() {
   // Add leg-lifts to the exercise types
   const [exerciseType, setExerciseType] = useState('lifting'); // Default to lifting, can be 'lifting', 'lunges', 'jumping-jacks', or 'leg-lifts'
   const [stopExerciseFunc, setStopExerciseFunc] = useState(() => () => ({}));
+  const [finalReps, setFinalReps] = useState(0);
+  const [finalWorkoutTime, setFinalWorkoutTime] = useState(0);
+
 
   // Check authentication on component mount
   useEffect(() => {
@@ -109,34 +112,36 @@ export default function Workout() {
   // End the current workout session
   const stopWorkout = async () => {
     if (!sessionId) return;
-
+  
     try {
-      // Get workout data from the exercise module
       const workoutData = stopExerciseFunc();
-      
-      // Save workout duration
+  
+      // Store final values for display
+      setFinalReps(workoutData.reps);
+      setFinalWorkoutTime(workoutTime);
+  
       await axios.post(`${API_URL}/end-workout`, {
         session_id: sessionId,
         duration: workoutTime
       }, {
-        withCredentials: true, // Explicitly include credentials
+        withCredentials: true,
       });
-      
-      // Save exercise data
+  
       await axios.post(`${API_URL}/save-exercise`, {
         session_id: sessionId,
         type: exerciseType,
         reps: workoutData.reps
       }, {
-        withCredentials: true, // Explicitly include credentials
+        withCredentials: true,
       });
-      
-      // Refresh user progress data
+  
       fetchUserProgress();
-      
-      // Show results
+  
+      // Transition to results view
       setShowResults(true);
       setShow(false);
+  
+      // Reset main workout state
       setReps(0);
       setStage('');
       setWorkoutTime(0);
@@ -145,6 +150,7 @@ export default function Workout() {
       setError(err.response?.data?.error || "Failed to save workout data");
     }
   };
+  
 
   // Initialize pose detection
   useEffect(() => {
@@ -400,11 +406,11 @@ export default function Workout() {
           <div className="grid grid-cols-3 gap-4 mb-4">
             <div className="bg-gray-700 p-4 rounded-lg">
               <h3 className="text-lg font-medium text-blue-400 mb-2">Total Reps</h3>
-              <p className="text-3xl font-bold text-white">{reps}</p>
+              <p className="text-3xl font-bold text-white">{finalReps}</p>
             </div>
             <div className="bg-gray-700 p-4 rounded-lg">
               <h3 className="text-lg font-medium text-green-400 mb-2">Workout Time</h3>
-              <p className="text-3xl font-bold text-white">{formatTime(workoutTime)}</p>
+              <p className="text-3xl font-bold text-white">{formatTime(finalWorkoutTime)}</p>
             </div>
             <div className="bg-gray-700 p-4 rounded-lg">
               <h3 className="text-lg font-medium text-purple-400 mb-2">Exercise</h3>
