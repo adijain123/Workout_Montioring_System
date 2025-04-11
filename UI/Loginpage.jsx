@@ -58,7 +58,7 @@ export function Loginpage() {
       if (error.response) {
         // Server responded with an error status
         if (error.response.status === 401) {
-          setError("Invalid email or password");
+          setError("Invalid email or password, try signup instead");
         } else if (error.response.data && error.response.data.message) {
           setError(error.response.data.message);
         } else {
