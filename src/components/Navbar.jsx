@@ -10,7 +10,7 @@ const Navbar = () => {
   const checkAuth = async () => {
     try {
       const response = await axios.get(
-        "https://backend-workout-monitoring.onrender.com/check-auth",
+        "https://workoutmonitoring-h5evazesdacvcpfk.eastasia-01.azurewebsites.net/check-auth",
         {
           withCredentials: true,
         }
@@ -32,7 +32,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "https://backend-workout-monitoring.onrender.com/logout",
+        "https://workoutmonitoring-h5evazesdacvcpfk.eastasia-01.azurewebsites.net/logout",
         {},
         { withCredentials: true }
       );

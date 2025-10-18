@@ -29,7 +29,7 @@ ChartJS.register(
 );
 
 // Use a consistent API URL format
-const API_URL = "https://backend-workout-monitoring.onrender.com";
+const API_URL = "https://workoutmonitoring-h5evazesdacvcpfk.eastasia-01.azurewebsites.net";
 
 export default function Workout() {
   const videoRef = useRef(null);

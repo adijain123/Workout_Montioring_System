@@ -40,7 +40,7 @@ export function Loginpage() {
 
     try {
       const response = await axios.post(
-        'https://backend-workout-monitoring.onrender.com/login',
+        'https://workoutmonitoring-h5evazesdacvcpfk.eastasia-01.azurewebsites.net/login',
         { email, password },
         { withCredentials: true }
       );

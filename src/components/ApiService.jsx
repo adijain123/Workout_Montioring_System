@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base API URL
-const API_URL = 'https://backend-workout-monitoring.onrender.com';
+const API_URL = 'https://workoutmonitoring-h5evazesdacvcpfk.eastasia-01.azurewebsites.net';
 
 // Configure axios to include credentials for session cookies
 axios.defaults.withCredentials = true;

@@ -50,7 +50,7 @@ export function SignupFormDemo() {
 
     try {
       const response = await axios.post(
-        'https://backend-workout-monitoring.onrender.com/signup',
+        'https://workoutmonitoring-h5evazesdacvcpfk.eastasia-01.azurewebsites.net/signup',
         {
           firstname,
           lastname,
